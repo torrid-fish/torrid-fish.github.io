@@ -1,0 +1,43 @@
+span.accent_plain {
+    border-top: solid 0.1rem rgb(176, 104, 104);
+    padding-top: 0.1rem;
+    position: relative;
+}
+
+span.accent_top {
+    border-top: solid 0.1rem rgb(176, 104, 104);
+    padding-top: 0.1rem;
+    position: relative;
+}
+
+span.accent_top::after {
+    content: "";
+    position: absolute;
+    top: -0.1rem;
+    bottom: 0.1rem;
+    border-right: 0.1rem solid rgb(176, 104, 104);
+    width: 0;
+}
+
+span.spoiler-block {
+    border-radius: 2px;
+    background-color: #333;
+}
+
+span.spoiler-text-hidden {
+    opacity: 0;
+    cursor: pointer;
+}
+
+span.spoiler-text-view {
+    opacity: 100%;
+    color: white;
+    cursor: auto;
+}
+
+/* Overlap original settings */
+.markdown-body table {
+    width: fit-content; 
+    margin-left: auto;
+    margin-right: auto;
+}
