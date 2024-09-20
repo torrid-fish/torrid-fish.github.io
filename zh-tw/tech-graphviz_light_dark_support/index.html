@@ -1,0 +1,903 @@
+
+
+<!DOCTYPE html>
+<html lang="en,zh-tw,ja" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/cute_icon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Torrid-Fish">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="透過修改package內的renderer，來重新渲染Graphviz使其支援亮暗色主題變化。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[技術] 讓Graphviz也支援亮暗主題色變化吧">
+<meta property="og:url" content="https://torrid-fish.github.io/zh-tw/tech-graphviz_light_dark_support/index.html">
+<meta property="og:site_name" content="Torrid Blog">
+<meta property="og:description" content="透過修改package內的renderer，來重新渲染Graphviz使其支援亮暗色主題變化。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://torrid-fish.github.io/img/tech/light_dark.png">
+<meta property="article:published_time" content="2024-01-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-20T04:31:06.160Z">
+<meta property="article:author" content="Torrid Fish">
+<meta property="article:tag" content="Torrid-Blog開發日記">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://torrid-fish.github.io/img/tech/light_dark.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>[技術] 讓Graphviz也支援亮暗主題色變化吧 - Torrid Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/others/css/accent.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"torrid-fish.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/zh-tw/">
+      <strong>Torrid Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/zh-tw/">
+                <i class="fa fa-home"></i>
+                <span>首頁</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/zh-tw/archives/">
+                <i class="fa fa-calendar"></i>
+                <span>文章清單</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/zh-tw/categories/">
+                <i class="iconfont icon-category"></i>
+                <span>分類</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/zh-tw/tags/">
+                <i class="iconfont icon-tags"></i>
+                <span>標籤</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/zh-tw/about/">
+                <i class="fa fa-user"></i>
+                <span>關於我</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-globe"></i>
+                <span>語言</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  
+                    <!-- For languge menu. -->
+                    <a class="dropdown-item" href="/tech-graphviz_light_dark_support/"> 
+                      
+                      <span>English</span>
+                    </a>
+                  
+                
+                  
+                  
+                  
+                  
+                    <!-- For languge menu. -->
+                    <a class="dropdown-item" href="/zh-tw/tech-graphviz_light_dark_support/"> 
+                      
+                      <span>繁體中文</span>
+                    </a>
+                  
+                
+                  
+                  
+                  
+                  
+                    <!-- For languge menu. -->
+                    <a class="dropdown-item" href="/ja/tech-graphviz_light_dark_support/"> 
+                      
+                      <span>日本語</span>
+                    </a>
+                  
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch-zh-tw" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/../../img/tech/light_dark.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="[技術] 讓Graphviz也支援亮暗主題色變化吧"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-01 00:00" pubdate>
+          2024年2月1日
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">[技術] 讓Graphviz也支援亮暗主題色變化吧</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="緣起"><a href="#緣起" class="headerlink" title="緣起"></a>緣起</h2><p>自己一直以來都是hackMD的重度使用者，無論是上課的筆記，還是自學知識的知識，基本上都是記錄在hackmd上面。</p>
+<p>我會這麼喜歡hackMD的原因，就是因為他結合了很多十分方便的功能：例如像是用$$包住就可以打出$\LaTeX$的數學式，用```graphviz```就可以打出流程圖(Graphviz)。這種只需要文字就可以打出需要的圖&#x2F;文字的設計，我真的覺得非常好用。</p>
+<p>在打算開始建立個人部落格後，因為他一樣是使用markdown的型式來書寫，所以我也不想脫離上述兩個好用功能。而我使用的blog主題是基於Fluid的<del>修改版</del>，他也提供了內建的亮、暗色模式，所以我就發現了一個讓我看得不是很順眼的問題。</p>
+<h3 id="問題"><a href="#問題" class="headerlink" title="問題"></a>問題</h3><p>我們先來看一個由$\LaTeX$語法寫出的數學式：</p>
+<p>$$<br>\sum\limits_{i&#x3D;0}^{n}a_i<br>$$</p>
+<p>雖然$\LaTeX$能夠支援根據背影的顏色來調整現在字體的顏色(可以試著手動切換亮暗色模式試試看！)，但是Graphviz就沒辦法支援這一點。因為原生的hexo並不支援用像是寫hackMD的方式來渲染Graphviz，所以我使用的套件是<a target="_blank" rel="noopener" href="https://github.com/kkppll-ss/hexo-filter-viz"><code>hexo-filter-viz</code></a>。我們來看一個用原本的<code>hexo-filter-viz</code>渲染出來的SVG：</p>
+<svg width="337pt" height="184pt" viewBox="0.00 0.00 337.30 183.74" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph" class="graph" transform="scale(1 1) rotate(0) translate(4 179.7361)">
+<title>relax</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-179.7361 333.2956,-179.7361 333.2956,4 -4,4"></polygon>
+<!-- A -->
+<g id="node1" class="node">
+<title>A</title>
+<ellipse fill="none" stroke="#b2dfee" cx="151.3691" cy="-18.0079" rx="18.0157" ry="18.0157"></ellipse>
+<text text-anchor="middle" x="151.3691" y="-13.8079" font-family="Times,serif" font-size="14.00" fill="#000000">A</text>
+<text text-anchor="middle" x="66.6806" y="-57.0157" font-family="Times,serif" font-size="14.00" fill="#000000">Updated</text>
+<text text-anchor="middle" x="66.6806" y="-40.2157" font-family="Times,serif" font-size="14.00" fill="#000000">Want to go to the cloest</text>
+</g>
+<!-- b -->
+<g id="node2" class="node">
+<title>b</title>
+<ellipse fill="none" stroke="#ff0000" cx="151.3691" cy="-107.3361" rx="18" ry="18"></ellipse>
+<text text-anchor="middle" x="151.3691" y="-103.1361" font-family="Times,serif" font-size="14.00" fill="#000000">b</text>
+<text text-anchor="middle" x="74.0861" y="-163.1361" font-family="Times,serif" font-size="14.00" fill="#000000">Cloest to</text>
+<text text-anchor="middle" x="74.0861" y="-146.3361" font-family="Times,serif" font-size="14.00" fill="#000000"> the current subgraph</text>
+<text text-anchor="middle" x="74.0861" y="-129.5361" font-family="Times,serif" font-size="14.00" fill="#000000">(Update first)</text>
+</g>
+<!-- A&#45;&gt;b -->
+<g id="edge1" class="edge">
+<title>A-&gt;b</title>
+<path fill="none" stroke="#ff0000" d="M151.3691,-36.0848C151.3691,-48.4348 151.3691,-65.0488 151.3691,-79.1272"></path>
+<polygon fill="#ff0000" stroke="#ff0000" points="147.8692,-79.2861 151.3691,-89.2861 154.8692,-79.2861 147.8692,-79.2861"></polygon>
+<text text-anchor="middle" x="147.8691" y="-61.806" font-family="Times,serif" font-size="14.00" fill="#000000">1</text>
+</g>
+<!-- c -->
+<g id="node3" class="node">
+<title>c</title>
+<ellipse fill="none" stroke="#a52a2a" cx="228.7296" cy="-62.672" rx="18" ry="18"></ellipse>
+<text text-anchor="middle" x="228.7296" y="-58.472" font-family="Times,serif" font-size="14.00" fill="#000000">c</text>
+<text text-anchor="middle" x="270.0126" y="-101.672" font-family="Times,serif" font-size="14.00" fill="#000000">Second close to</text>
+<text text-anchor="middle" x="270.0126" y="-84.872" font-family="Times,serif" font-size="14.00" fill="#000000"> the current subgraph</text>
+</g>
+<!-- A&#45;&gt;c -->
+<g id="edge3" class="edge">
+<title>A-&gt;c</title>
+<path fill="none" stroke="#a52a2a" d="M167.0241,-27.0463C177.7195,-33.2213 192.1078,-41.5284 204.3,-48.5675"></path>
+<polygon fill="#a52a2a" stroke="#a52a2a" points="202.6875,-51.678 213.0978,-53.647 206.1876,-45.6158 202.6875,-51.678"></polygon>
+<text text-anchor="middle" x="182.162" y="-42.0069" font-family="Times,serif" font-size="14.00" fill="#000000">5</text>
+</g>
+<!-- b&#45;&gt;c -->
+<g id="edge2" class="edge">
+<title>b-&gt;c</title>
+<path fill="none" stroke="#000000" d="M167.0241,-98.2977C177.7195,-92.1227 192.1078,-83.8156 204.3,-76.7765"></path>
+<polygon fill="#000000" stroke="#000000" points="206.1876,-79.7281 213.0978,-71.697 202.6875,-73.666 206.1876,-79.7281"></polygon>
+<text text-anchor="middle" x="182.162" y="-91.7371" font-family="Times,serif" font-size="14.00" fill="#000000">2</text>
+</g>
+</g>
+</svg>
+
+<br>
+<br>
+
+<p>第一眼看到的問題就是<strong>它不是置中的！</strong>而且亮色模式下看起來沒什麼問題，但切到暗色模試就很痛苦了。那突兀的背景，還有不隨著主題色變化的線條，真的感覺需要好好修理一番😢。經過一連串的調整，最終我得到了以下的結果：</p>
+<div id="graphviz-0" style="text-align:center;"></div>
+<br>
+
+<p>看起來非常棒！除了原本就有顏色的部分，其餘的部分都會隨著亮暗色主題變化，並且也沒有背景了！我在markdown檔裡面只需要像平常使用graphviz的方式，就可以生成支援暗色模式的流程圖了！接下來就讓我來介紹我到底做了哪些事吧！</p>
+<h2 id="開始工作"><a href="#開始工作" class="headerlink" title="開始工作"></a>開始工作</h2><h3 id="如何渲染"><a href="#如何渲染" class="headerlink" title="如何渲染"></a>如何渲染</h3><p>首先一開始要先感謝<strong>Chris 技術筆記</strong>的<a target="_blank" rel="noopener" href="https://dwatow.github.io/2019/02-04-hexo/hexo-filter-viz/">這篇文章</a>。其實最一開始fluid主題是沒有支援使用像hackmd的方式產生Graphviz的，所以我一開始也是用他改寫好的套件來使用。如果大家有興趣的話記得點進去看看！</p>
+<p>總之，點進他寫好的套件後，可以發現最重要的檔案就是<code>lib/render.js</code>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">var</span> reg = <span class="hljs-regexp">/(\s*)(```) *(graphviz) *\n?([\s\S]+?)\s*(\2)(\n+|$)/g</span>;<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">ignore</span>(<span class="hljs-params">data</span>) &#123;<br>  <span class="hljs-keyword">var</span> source = data.<span class="hljs-property">source</span>;<br>  <span class="hljs-keyword">var</span> ext = source.<span class="hljs-title function_">substring</span>(source.<span class="hljs-title function_">lastIndexOf</span>(<span class="hljs-string">&#x27;.&#x27;</span>)).<span class="hljs-title function_">toLowerCase</span>();<br>  <span class="hljs-keyword">return</span> [<span class="hljs-string">&#x27;.js&#x27;</span>, <span class="hljs-string">&#x27;.css&#x27;</span>, <span class="hljs-string">&#x27;.html&#x27;</span>, <span class="hljs-string">&#x27;.htm&#x27;</span>].<span class="hljs-title function_">indexOf</span>(ext) &gt; -<span class="hljs-number">1</span>;<br>&#125;<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">getId</span>(<span class="hljs-params">index</span>) &#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;graphviz-&#x27;</span> + index;<br>&#125;<br><br><span class="hljs-built_in">exports</span>.<span class="hljs-property">render</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>) &#123;<br>  <span class="hljs-keyword">if</span> (!<span class="hljs-title function_">ignore</span>(data)) &#123;<br><br>    <span class="hljs-keyword">var</span> graphviz = [];<br><br>    data.<span class="hljs-property">content</span> = data.<span class="hljs-property">content</span><br>      .<span class="hljs-title function_">replace</span>(reg, <span class="hljs-keyword">function</span>(<span class="hljs-params">raw, start, startQuote, lang, content, endQuote, end</span>) &#123;<br>        <span class="hljs-keyword">var</span> graphvizId = <span class="hljs-title function_">getId</span>(graphviz.<span class="hljs-property">length</span>);<br>        graphviz.<span class="hljs-title function_">push</span>(content);<br>        <span class="hljs-keyword">return</span> start + <span class="hljs-string">&#x27;&lt;div id=&quot;&#x27;</span> + graphvizId + <span class="hljs-string">&#x27;&gt;&lt;/div&gt;&#x27;</span> + end;<br>      &#125;);<br><br>    <span class="hljs-keyword">if</span> (graphviz.<span class="hljs-property">length</span>) &#123;<br>      <span class="hljs-keyword">var</span> config = <span class="hljs-variable language_">this</span>.<span class="hljs-property">config</span>.<span class="hljs-property">graphviz</span>;<br>      <span class="hljs-comment">// resources</span><br>      data.<span class="hljs-property">content</span> += <span class="hljs-string">&#x27;&lt;script src=&quot;&#x27;</span> + config.<span class="hljs-property">vizjs</span> + <span class="hljs-string">&#x27;&quot;&gt;&lt;/script&gt;&#x27;</span>;<br>      data.<span class="hljs-property">content</span> += <span class="hljs-string">&#x27;&lt;script src=&quot;&#x27;</span> + config.<span class="hljs-property">render</span> + <span class="hljs-string">&#x27;&quot;&gt;&lt;/script&gt;&#x27;</span>;<br>      data.<span class="hljs-property">content</span> += graphviz.<span class="hljs-title function_">map</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">code, index</span>) &#123;<br>        <span class="hljs-keyword">var</span> graphvizId = <span class="hljs-title function_">getId</span>(index);<br>        <span class="hljs-keyword">var</span> codeId = graphvizId + <span class="hljs-string">&#x27;-code&#x27;</span>;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;&#x27;</span> +<br>          <span class="hljs-string">&#x27;&#123;% raw %&#125;&#x27;</span> +<br>          <span class="hljs-string">&#x27;&lt;textarea id=&quot;&#x27;</span> + codeId + <span class="hljs-string">&#x27;&quot; style=&quot;display: none&quot;&gt;&#x27;</span> + code + <span class="hljs-string">&#x27;&lt;/textarea&gt;&#x27;</span> +<br>          <span class="hljs-string">&#x27;&lt;script&gt;&#x27;</span> +<br>          <span class="hljs-string">&#x27;  var viz = new Viz();&#x27;</span> +<br>          <span class="hljs-string">&#x27;  var code = document.getElementById(&quot;&#x27;</span> + codeId + <span class="hljs-string">&#x27;&quot;).value;&#x27;</span> +<br>          <span class="hljs-string">&#x27;  viz.renderSVGElement(code)&#x27;</span> +<br>          <span class="hljs-string">&#x27;  .then(function(element) &#123;&#x27;</span> +<br>          <span class="hljs-string">&#x27;    document.getElementById(&quot;&#x27;</span> + graphvizId + <span class="hljs-string">&#x27;&quot;).append(element);&#x27;</span> +<br>          <span class="hljs-string">&#x27;  &#125;);&#x27;</span> +<br>          <span class="hljs-string">&#x27;&lt;/script&gt;&#x27;</span> +<br>          <span class="hljs-string">&#x27;&#123;% endraw %&#125;&#x27;</span>;<br>      &#125;).<span class="hljs-title function_">join</span>(<span class="hljs-string">&#x27;&#x27;</span>);<br>    &#125;<br>  &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>原來如此，所以其實就是把原本的程式碼塊進行拆解，然後用<code>&#123;%　raw　%&#125;</code>來注入程式碼，並用<code>Viz</code>來渲染整份程式碼。最後會把render好的element回傳到寫著<code>&lt;div id=&quot;graphvizID&quot;&gt;&lt;/div&gt;</code>的裡面。原來如此，大致了解了。</p>
+<p>看起來這裡就是我該動手修改的地方。還在等什麼？直接fork一份開始改起來囉！</p>
+<h3 id="置中"><a href="#置中" class="headerlink" title="置中"></a>置中</h3><p>但其實我一開始看到不順眼的地方是<strong>預設的結果並不是置中的</strong>，這讓我看的很痛苦。所以就讓我手動在<code>&lt;div id=&quot;graphvizID&quot;&gt;&lt;/div&gt;</code>這個tag裡面加上<code>style=&quot;text-align:center;&quot;</code>這個attribute吧！</p>
+<h3 id="移除背景和修改線條顏色"><a href="#移除背景和修改線條顏色" class="headerlink" title="移除背景和修改線條顏色"></a>移除背景和修改線條顏色</h3><p>再來一個就是背景色，雖然可以在markdown書寫時手動寫<code>bgcolor=transparent;</code>，但我覺得這樣做太不優雅了，所以還是打算直接修改這裡注入<code>&#123;%　raw　%&#125;</code>裡的程式碼。首先我們要先來看他渲染出來的SVG架構長什麼樣子：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">svg</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;337pt&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;184pt&quot;</span> <span class="hljs-attr">viewBox</span>=<span class="hljs-string">&quot;0.00 0.00 337.30 183.74&quot;</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://www.w3.org/2000/svg&quot;</span> <span class="hljs-attr">xmlns:xlink</span>=<span class="hljs-string">&quot;http://www.w3.org/1999/xlink&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">g</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;graph0&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;graph&quot;</span> <span class="hljs-attr">transform</span>=<span class="hljs-string">&quot;scale(1 1) rotate(0) translate(4 179.7361)&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>relax<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">polygon</span> <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;#ffffff&quot;</span> <span class="hljs-attr">stroke</span>=<span class="hljs-string">&quot;transparent&quot;</span> <span class="hljs-attr">points</span>=<span class="hljs-string">&quot;-4,4 -4,-179.7361 333.2956,-179.7361 333.2956,4 -4,4&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">polygon</span>&gt;</span><br><span class="hljs-comment">&lt;!-- A --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">g</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;node1&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;node&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>A<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">ellipse</span> <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;none&quot;</span> <span class="hljs-attr">stroke</span>=<span class="hljs-string">&quot;#b2dfee&quot;</span> <span class="hljs-attr">cx</span>=<span class="hljs-string">&quot;151.3691&quot;</span> <span class="hljs-attr">cy</span>=<span class="hljs-string">&quot;-18.0079&quot;</span> <span class="hljs-attr">rx</span>=<span class="hljs-string">&quot;18.0157&quot;</span> <span class="hljs-attr">ry</span>=<span class="hljs-string">&quot;18.0157&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ellipse</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">text</span> <span class="hljs-attr">text-anchor</span>=<span class="hljs-string">&quot;middle&quot;</span> <span class="hljs-attr">x</span>=<span class="hljs-string">&quot;151.3691&quot;</span> <span class="hljs-attr">y</span>=<span class="hljs-string">&quot;-13.8079&quot;</span> <span class="hljs-attr">font-family</span>=<span class="hljs-string">&quot;Times,serif&quot;</span> <span class="hljs-attr">font-size</span>=<span class="hljs-string">&quot;14.00&quot;</span> <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;#000000&quot;</span>&gt;</span>A<span class="hljs-tag">&lt;/<span class="hljs-name">text</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">text</span> <span class="hljs-attr">text-anchor</span>=<span class="hljs-string">&quot;middle&quot;</span> <span class="hljs-attr">x</span>=<span class="hljs-string">&quot;66.6806&quot;</span> <span class="hljs-attr">y</span>=<span class="hljs-string">&quot;-57.0157&quot;</span> <span class="hljs-attr">font-family</span>=<span class="hljs-string">&quot;Times,serif&quot;</span> <span class="hljs-attr">font-size</span>=<span class="hljs-string">&quot;14.00&quot;</span> <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;#000000&quot;</span>&gt;</span>Updated<span class="hljs-tag">&lt;/<span class="hljs-name">text</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">text</span> <span class="hljs-attr">text-anchor</span>=<span class="hljs-string">&quot;middle&quot;</span> <span class="hljs-attr">x</span>=<span class="hljs-string">&quot;66.6806&quot;</span> <span class="hljs-attr">y</span>=<span class="hljs-string">&quot;-40.2157&quot;</span> <span class="hljs-attr">font-family</span>=<span class="hljs-string">&quot;Times,serif&quot;</span> <span class="hljs-attr">font-size</span>=<span class="hljs-string">&quot;14.00&quot;</span> <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;#000000&quot;</span>&gt;</span>Want to go to the cloest<span class="hljs-tag">&lt;/<span class="hljs-name">text</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">g</span>&gt;</span><br><span class="hljs-comment">&lt;!-- A&amp;#45;&amp;gt;c --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">g</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;edge3&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;edge&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>A-<span class="hljs-symbol">&amp;gt;</span>c<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">path</span> <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;none&quot;</span> <span class="hljs-attr">stroke</span>=<span class="hljs-string">&quot;#a52a2a&quot;</span> <span class="hljs-attr">d</span>=<span class="hljs-string">&quot;M167.0241,-27.0463C177.7195,-33.2213 192.1078,-41.5284 204.3,-48.5675&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">path</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">polygon</span> <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;#a52a2a&quot;</span> <span class="hljs-attr">stroke</span>=<span class="hljs-string">&quot;#a52a2a&quot;</span> <span class="hljs-attr">points</span>=<span class="hljs-string">&quot;202.6875,-51.678 213.0978,-53.647 206.1876,-45.6158 202.6875,-51.678&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">polygon</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">text</span> <span class="hljs-attr">text-anchor</span>=<span class="hljs-string">&quot;middle&quot;</span> <span class="hljs-attr">x</span>=<span class="hljs-string">&quot;182.162&quot;</span> <span class="hljs-attr">y</span>=<span class="hljs-string">&quot;-42.0069&quot;</span> <span class="hljs-attr">font-family</span>=<span class="hljs-string">&quot;Times,serif&quot;</span> <span class="hljs-attr">font-size</span>=<span class="hljs-string">&quot;14.00&quot;</span> <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;#000000&quot;</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">text</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">g</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">g</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<p>雖然這裡我只列出幾個重要的部件，但由上述渲染出的結果我們就可以發現：最外層的<code>svg</code>tag調整的是整個SVG的圖片大小，而進到第一層<code>g</code>則是代表整個圖，其裡面第一層<code>polygon</code>就是背景，而接下來幾個<code>g</code>則是圖中的部件，像是表示形狀的<code>node</code>，還有箭頭的<code>edge</code>等等，裡面會再包幾個小的element來湊出需要的形狀。</p>
+<p>而我這裡因為想處理的方式是透過調整<code>fill</code>和<code>stroke</code>來調整顏色：如果是希望看不到的話，就把顏色設成<code>transparent</code>，而若是想變成因應主題的字體顏色的話，就改成<code>var(--text-color)</code>。所以這裡我把背景還有其他<code>polygon</code>一起處理：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">var</span> viz = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Viz</span>();<br><span class="hljs-keyword">var</span> code = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&quot; + codeId + &quot;</span>).<span class="hljs-property">value</span>;<br>viz.<span class="hljs-title function_">renderSVGElement</span>(code)<br>.<span class="hljs-title function_">then</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">element</span>) &#123;<br>element.<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">&quot;width&quot;</span>, <span class="hljs-string">&quot;100%&quot;</span>); <span class="hljs-comment">// Adjust size</span><br>polygons = element.<span class="hljs-title function_">getElementsByTagName</span>(<span class="hljs-string">&quot;polygon&quot;</span>);<br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; polygons.<span class="hljs-property">length</span>; i += <span class="hljs-number">1</span>) &#123;<br>    <span class="hljs-keyword">if</span> (polygons[i].<span class="hljs-property">parentElement</span>.<span class="hljs-property">className</span>.<span class="hljs-property">baseVal</span> == <span class="hljs-string">&quot;graph&quot;</span>) &#123;<br>        polygons[i].<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">&quot;stroke&quot;</span>, <span class="hljs-string">&quot;transparent&quot;</span>); <span class="hljs-comment">// Background</span><br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (polygons[i].<span class="hljs-title function_">getAttribute</span>(<span class="hljs-string">&quot;stroke&quot;</span>) == <span class="hljs-string">&quot;#000000&quot;</span>) &#123;<br>        polygons[i].<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">&quot;stroke&quot;</span>, <span class="hljs-string">&quot;var(--text-color)&quot;</span>);<br>    &#125;<br>    <span class="hljs-keyword">if</span> (polygons[i].<span class="hljs-property">parentElement</span>.<span class="hljs-property">className</span>.<span class="hljs-property">baseVal</span> == <span class="hljs-string">&quot;graph&quot;</span>) &#123;<br>        polygons[i].<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">&quot;fill&quot;</span>, <span class="hljs-string">&quot;transparent&quot;</span>);  <span class="hljs-comment">// Background</span><br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (polygons[i].<span class="hljs-title function_">getAttribute</span>(<span class="hljs-string">&quot;fill&quot;</span>) == <span class="hljs-string">&quot;#000000&quot;</span> &amp;&amp; polygons[i].<span class="hljs-property">parentElement</span>.<span class="hljs-property">className</span>.<span class="hljs-property">baseVal</span> == <span class="hljs-string">&quot;edge&quot;</span>) &#123;<br>        polygons[i].<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">&quot;fill&quot;</span>, <span class="hljs-string">&quot;var(--text-color)&quot;</span>);<br>    &#125;<br>&#125;<br>paths = element.<span class="hljs-title function_">getElementsByTagName</span>(<span class="hljs-string">&quot;path&quot;</span>);<br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; paths.<span class="hljs-property">length</span>; i += <span class="hljs-number">1</span>) &#123;<br>    <span class="hljs-keyword">if</span> (paths[i].<span class="hljs-title function_">getAttribute</span>(<span class="hljs-string">&quot;fill&quot;</span>) == <span class="hljs-string">&quot;none&quot;</span> &amp;&amp; paths[i].<span class="hljs-property">parentElement</span>.<span class="hljs-property">className</span>.<span class="hljs-property">baseVal</span> == <span class="hljs-string">&quot;edge&quot;</span>) &#123; <br>        paths[i].<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">&quot;fill&quot;</span>, <span class="hljs-string">&quot;var(--text-color)&quot;</span>);<br>    &#125;<br>    <span class="hljs-keyword">if</span> (paths[i].<span class="hljs-title function_">getAttribute</span>(<span class="hljs-string">&quot;stroke&quot;</span>) == <span class="hljs-string">&quot;#000000&quot;</span> &amp;&amp; paths[i].<span class="hljs-property">parentElement</span>.<span class="hljs-property">className</span>.<span class="hljs-property">baseVal</span> == <span class="hljs-string">&quot;edge&quot;</span>) &#123; <br>        paths[i].<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">&quot;stroke&quot;</span>, <span class="hljs-string">&quot;var(--text-color)&quot;</span>);<br>    &#125;<br>&#125;<br>ellipses = element.<span class="hljs-title function_">getElementsByTagName</span>(<span class="hljs-string">&quot;ellipse&quot;</span>);<br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; ellipses.<span class="hljs-property">length</span>; i += <span class="hljs-number">1</span>) &#123;<br>    <span class="hljs-keyword">if</span> (ellipses[i].<span class="hljs-title function_">getAttribute</span>(<span class="hljs-string">&quot;stroke&quot;</span>) == <span class="hljs-string">&quot;#000000&quot;</span>) &#123; <br>        ellipses[i].<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">&quot;stroke&quot;</span>, <span class="hljs-string">&quot;var(--text-color)&quot;</span>);<br>    &#125;<br>&#125;<br>texts = element.<span class="hljs-title function_">getElementsByTagName</span>(<span class="hljs-string">&quot;text&quot;</span>); <br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; texts.<span class="hljs-property">length</span>; i += <span class="hljs-number">1</span>) &#123;<br>    <span class="hljs-keyword">if</span> (texts[i].<span class="hljs-title function_">getAttribute</span>(<span class="hljs-string">&quot;fill&quot;</span>) == <span class="hljs-string">&quot;#000000&quot;</span>) &#123; <br>        texts[i].<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">&quot;fill&quot;</span>, <span class="hljs-string">&quot;var(--text-color)&quot;</span>);<br>    &#125;<br>    texts[i].<span class="hljs-title function_">setAttribute</span>(<span class="hljs-string">&quot;stroke&quot;</span>, <span class="hljs-string">&quot;none&quot;</span>);<br>&#125;<br><span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&quot; + graphvizId + &quot;</span>).<span class="hljs-title function_">append</span>(element);<br>&#125;);<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>這裡在調整個element只有上述幾個我覺得比較常用的，至於其他我覺得應該用不太到的我就沒有放上去了。</p>
+</blockquote>
+<p>這裡只是重點把回傳要注入<code>&#123;%　raw　%&#125;</code>的JavaScript Code寫出來。可以看到就只是簡單地把fill和stroke為預設的值改為對應主題色的<code>var(--text-color)</code>，而在Polygon內還會再特判背景的狀況這樣。</p>
+<h3 id="調整大小"><a href="#調整大小" class="headerlink" title="調整大小"></a>調整大小</h3><p>最後的最後，在調整完才發現如果給定的圖太大張，其實會超過整個筆記的版面(往右邊超出界)，因此這裡在第5行手動調整width為100%，這樣就不會出界了！</p>
+<h3 id="成品"><a href="#成品" class="headerlink" title="成品"></a>成品</h3><p>Okay！在經過上述的調整後，看過一輪應該是沒什麼大問題了！於是就把修改好的結果存在<a target="_blank" rel="noopener" href="https://github.com/torrid-fish/hexo-filter-viz-customized"><code>hexo-filter-viz-customized</code></a>，這樣我用在github上的CI&#x2F;CD也能夠下載到這個套件，正常地幫我渲染Graphviz啦！讚讚！</p>
+<h2 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h2><p>其實這個修改大概是2023暑假就想做的了，只是因為太忙一直拖到了寒假，因為心血來潮就把這個小問題解掉了。原本在大二還沒修完軟體設計實驗對網頁內的JavaScript都還是敬而遠之的狀態，不過我想在經過這一次的實作，也發現自己開始有能力透過閱讀document，來完成自己需要的功能。我想這也算是一種成長吧XD。雖然做的東西很簡單，但是對整體的美觀性來說還是有很顯著的提升的，期待下次還可以繼續強化並讓這個部落格更完整😎。<script src="https://unpkg.com/viz.js@2.1.2/viz.js"></script><script src="https://unpkg.com/viz.js@2.1.2/full.render.js"></script><textarea id="graphviz-0-code" style="display: none">digraph relax{
+    layout = circo;
+    node [shape = circle];
+    A -> b [color = "red", label = "1"];
+    b -> c [label = "2"];
+    A -> c [color = "brown", label = "5"];
+    A [color = "lightblue2", xlabel = "Updated\nWant to go to the cloest"];
+    b [color = "red", xlabel = "Cloest to\n the current subgraph\n(Update first)"];
+    c [color = "brown", xlabel = "Second close to\n the current subgraph"];
+}</textarea><script>  var viz = new Viz();  var code = document.getElementById("graphviz-0-code").value;  viz.renderSVGElement(code)  .then(function(element) {    element.setAttribute("width", "100%");     polygons = element.getElementsByTagName("polygon");    for (var i = 0; i < polygons.length; i += 1) {        if (polygons[i].parentElement.className.baseVal == "graph") {            polygons[i].setAttribute("stroke", "transparent");        } else if (polygons[i].getAttribute("stroke") == "#000000") {            polygons[i].setAttribute("stroke", "var(--text-color)");        }        if (polygons[i].parentElement.className.baseVal == "graph") {            polygons[i].setAttribute("fill", "transparent");        } else if (polygons[i].getAttribute("fill") == "#000000" && polygons[i].parentElement.className.baseVal == "edge") {            polygons[i].setAttribute("fill", "var(--text-color)");        }    }    paths = element.getElementsByTagName("path");    for (var i = 0; i < paths.length; i += 1) {        if (paths[i].getAttribute("fill") == "none" && paths[i].parentElement.className.baseVal == "edge") {             paths[i].setAttribute("fill", "var(--text-color)");        }        if (paths[i].getAttribute("stroke") == "#000000" && paths[i].parentElement.className.baseVal == "edge") {             paths[i].setAttribute("stroke", "var(--text-color)");        }    }    ellipses = element.getElementsByTagName("ellipse");    for (var i = 0; i < ellipses.length; i += 1) {        if (ellipses[i].getAttribute("stroke") == "#000000") {             ellipses[i].setAttribute("stroke", "var(--text-color)");        }    }    texts = element.getElementsByTagName("text");    for (var i = 0; i < texts.length; i += 1) {        if (texts[i].getAttribute("fill") == "#000000") {             texts[i].setAttribute("fill", "var(--text-color)");        }        texts[i].setAttribute("stroke", "none");    }    document.getElementById("graphviz-0").append(element);  });</script></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/zh-tw/categories/%E6%8A%80%E8%A1%93/" class="category-chain-item">技術</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/zh-tw/tags/Torrid-Blog%E9%96%8B%E7%99%BC%E6%97%A5%E8%A8%98/">#Torrid-Blog開發日記</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>[技術] 讓Graphviz也支援亮暗主題色變化吧</div>
+      <div>https://torrid-fish.github.io/zh-tw/tech-graphviz_light_dark_support/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Torrid-Fish</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>發布於</div>
+          <div>2024年2月1日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>許可協議</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <!-- TODO 換語言換頁 -->
+                      <a href="/ja/tech-graphviz_light_dark_support/" title="[技術] Graphvizも明るいテーマと暗いテーマの色の変化をサポートするようにしましょう">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">[技術] Graphvizも明るいテーマと暗いテーマの色の変化をサポートするようにしましょう</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/life-tsmc_2024_hackthon/" title="[Life] 2024 TSMC IT CareerHack Campus Hackathon">
+                        <span class="hidden-mobile">[Life] 2024 TSMC IT CareerHack Campus Hackathon</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目錄</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('mermaid' in window) {
+        mermaid.init();
+      }
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch-en" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜尋</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input-en" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">關鍵字</label>
+        </div>
+        <div class="list-group" id="local-search-result-en"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalSearch-zh-tw" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜尋</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input-zh-tw" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">關鍵字</label>
+        </div>
+        <div class="list-group" id="local-search-result-zh-tw"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalSearch-ja" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜尋</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input-ja" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">關鍵字</label>
+        </div>
+        <div class="list-group" id="local-search-result-ja"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       Powered by: <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> + <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br>Last Updated:
+      2024-09-20
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/others/js/ruby_gen.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允許 JavaScript 運行的環境下瀏覽效果更佳</div>
+  </noscript>
+</body>
+</html>

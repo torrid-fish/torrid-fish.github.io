@@ -1,0 +1,832 @@
+
+
+<!DOCTYPE html>
+<html lang="en,zh-tw,ja" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/cute_icon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Torrid-Fish">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Exploring LLM for the first time and simply fine-tuning an LLAVA model with LoRA. Although not winning the prize, it&#39;s still a very good experience.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Life] 2024 TSMC IT CareerHack Campus Hackathon">
+<meta property="og:url" content="https://torrid-fish.github.io/life-tsmc_2024_hackthon/index.html">
+<meta property="og:site_name" content="Torrid Blog">
+<meta property="og:description" content="Exploring LLM for the first time and simply fine-tuning an LLAVA model with LoRA. Although not winning the prize, it&#39;s still a very good experience.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://torrid-fish.github.io/img/life/tsmc_it.jpg">
+<meta property="article:published_time" content="2024-01-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-20T04:31:06.160Z">
+<meta property="article:author" content="Torrid Fish">
+<meta property="article:tag" content="Hackthon">
+<meta property="article:tag" content="Competition">
+<meta property="article:tag" content="gpt-translated">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://torrid-fish.github.io/img/life/tsmc_it.jpg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>[Life] 2024 TSMC IT CareerHack Campus Hackathon - Torrid Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/others/css/accent.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"torrid-fish.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Torrid Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="fa fa-home"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="fa fa-calendar"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="fa fa-user"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-globe"></i>
+                <span>Language</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  
+                    <!-- For languge menu. -->
+                    <a class="dropdown-item" href="/life-tsmc_2024_hackthon/"> 
+                      
+                      <span>English</span>
+                    </a>
+                  
+                
+                  
+                  
+                  
+                  
+                    <!-- For languge menu. -->
+                    <a class="dropdown-item" href="/zh-tw/life-tsmc_2024_hackthon/"> 
+                      
+                      <span>繁體中文</span>
+                    </a>
+                  
+                
+                  
+                  
+                  
+                  
+                    <!-- For languge menu. -->
+                    <a class="dropdown-item" href="/ja/life-tsmc_2024_hackthon/"> 
+                      
+                      <span>日本語</span>
+                    </a>
+                  
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch-en" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/../../img/life/tsmc_it.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="[Life] 2024 TSMC IT CareerHack Campus Hackathon"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-01-27 00:00" pubdate>
+          January 27, 2024
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">[Life] 2024 TSMC IT CareerHack Campus Hackathon</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="Join"><a href="#Join" class="headerlink" title="Join"></a>Join</h3><p>This time I was invited by CHEN ZHONG to participate in the <a target="_blank" rel="noopener" href="https://www.tsmc.com/static/english/careers/2024Careerhack/index.html">2024 TSMC Campus Hackathon</a>. Thinking of taking advantage of the good result I achieved in the previous Meizhu Hackathon, I continued with this momentum and registered for this competition to see if I can win a second award.</p>
+<p>When we first looked at the topic, because Hekun and I had already read many papers and implementations related to Computer Vision in our study group, we decided to choose the topic: “ AI Storytelling Through Image Recognition”.</p>
+<h4 id="Preliminary-competition"><a href="#Preliminary-competition" class="headerlink" title="Preliminary competition"></a>Preliminary competition</h4><p>In order to actually visit their Taipei office on 1&#x2F;26 and 1&#x2F;27 for the final round, we have to participate in the online preliminary round. Basically, it’s to test the ability to write programs, and languages like C++, Python, Java, etc. are available to choose from. The questions are relatively simple, my question is just greedy and some very basic questions. My friend heard that there are also tree-related questions. However, it’s really basic, bringing back memories of the late-night programming sessions in my freshman year.</p>
+<p>In short, I personally feel that there’s not much connection between the preliminaries and the finals. I find it quite unexpected to select people with this mechanism. (It’s said that over 100 groups signed up, and they need to select 24 groups in the end.)</p>
+<h4 id="Finals"><a href="#Finals" class="headerlink" title="Finals"></a>Finals</h4><p>After that, they notified us that we had made it to the finals and provided information such as the topics and the schedule for the hackathon. That’s when we began preparing.</p>
+<h4 id="Title-AI-Storytelling-Through-Image-Recognition"><a href="#Title-AI-Storytelling-Through-Image-Recognition" class="headerlink" title="Title: AI Storytelling Through Image Recognition"></a>Title: AI Storytelling Through Image Recognition</h4><p>The organizers provided a dataset containing some images with safety helmets, as well as the dialogue results with GPT, and the pretrained LLaVA model using LoRA. Our task is to use this information to create a system that can process an image and answer the following questions:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br><span class="hljs-attr">&quot;Q1&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Is there any people not wearing a helmets? Please answer with true or false.&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;Q2&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;How many people are there in the image? Please give a single integer answer.&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;Q3&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;How many people are there and wear a helmets in the image? Please give a single integer answer.&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;Q4&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;How many people are there and not wear a helmets in the image? Please give a single integer answer.&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;Q5&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Tell the color of the helmets that people wear in the image from this list: red, yellow, blue, white, green, orange, black.The answer may be more than one color.If there is no one wear a helmets, please answer None as response. &quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;Q6&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;What is the warning message shown in the image? Just give me the warning sentence.&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;Q7&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Is there anyone violating the warning message describe in the image?  Please answer with true or false.&quot;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+<p>Finally, the private set provided by the organizers will be used for scoring. 70% of the final score will be determined based on the correctness of the output mentioned above. Only 30% will be based on the performance of the on-site demo.</p>
+<p>This rating mechanism is not only completely different from the Meizhu Hackathon I participated in last time, but also raises some questions that I find quite hard to understand:<br>His private set only has 107 pictures, which makes it take about 1.5 hours for us to generate the results. If we really want to, it’s not impossible to manually annotate all the answers by hand. How can we ensure that no group manually fills in all the answers? Although there are people inspecting and warning us not to cheat, I still think it’s not very reasonable.</p>
+<h4 id="The-problems-encountered-on-GCP-Google-Cloud-Platform"><a href="#The-problems-encountered-on-GCP-Google-Cloud-Platform" class="headerlink" title="The problems encountered on GCP (Google Cloud Platform)."></a>The problems encountered on GCP (Google Cloud Platform).</h4><p>And this time they also asked Google Cloud to provide computing resources for us to use, but in our actual usage process, it was not very smooth.</p>
+<p>When we were trying to finetune instruct-BLIP, we once overloaded the RAM, causing the entire instance to crash. There was also a time before the competition when our instance crashed for some unknown reason. We received a letter from them asking if we did anything to cause it to fail, but we had no idea what happened. In fact, we didn’t do anything special at all.</p>
+<p>For example, the instances they provided to us have failed twice:<br>The first time it happened was 2 days after the hackathon. I suddenly received a reminder from the organizer that our instance had crashed, asking if we had issued any commands. But in fact, we didn’t do anything special, so we still don’t understand what happened to the machine at that time.<br>The second time was the day before the game. We were planning to load instruct-BLIP into the instance for finetuning, but it seemed that the disk was overloaded, and the entire instance crashed like that.</p>
+<p>Coincidentally, in addition to the instance, the bucket provided to us also encountered issues.<br>Before and during the competition, both Wenkun and I encountered permission errors when trying to transfer large files from the instance to the bucket. It was not until the Google Cloud team came to provide support on the day of the event that we discovered the issue was because Wenkun was making an additional ‘get’ command to the bucket, for which our instance initially seemed to lack the permission, thus causing the problem.</p>
+<p>However, it should be noted that their staff is actually very proactive. Whenever there are problems, they are basically taken care of immediately. At that time, when dealing with the issue of fixing the bucket, I really felt their proactiveness, and therefore felt a lot of pressure (having 6-7 people surrounding you is really no joke…). Anyway, I’m really grateful for their help!</p>
+<h4 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h4><p>Although the whole competition encountered many situations: such as a long-standing gastrointestinal problem, being rejected by Google for an internship, and also having one less partner the next day (he went to Japan 😢), etc., more or less affected the performance of these two days. So what I did really fell far below my own expectations. But I think the more important reason for not performing well this time is actually “we started too late” and “misunderstood the question”.</p>
+<h5 id="Too-late-to-start"><a href="#Too-late-to-start" class="headerlink" title="Too late to start"></a>Too late to start</h5><p>After the workshop ended, we basically only conducted simple paper reviews and tested the LLaVA, BLIP, and Flamingo frameworks. It was not until later that we discovered the resources provided by the organizers were insufficient for using BLIP and Flamingo. Therefore, much of the time spent was not very helpful for the final results. Additionally, due to health reasons, I only conducted simple data analysis during those days and did not even run the sample code to finetune LLaVA until the day of the competition. So I really feel that we started too late, and the results we could achieve in the two days of the competition might be the best we could do.</p>
+<h5 id="Misunderstanding-the-question"><a href="#Misunderstanding-the-question" class="headerlink" title="Misunderstanding the question,"></a>Misunderstanding the question,</h5><p>When we first saw the question, some of us thought, “Do we really need to use generative models for the previous questions?” The problems requested could actually be well solved with the CV models we have learned. Why do we need to use generative models? (Of course, for questions like Q7 that require logical reasoning, we also think it’s necessary.) So we wrote to the organizers to ask if we could use computer vision models to answer. However, we received their response: “It is not recommended to use specialized models to answer one by one, because questions like the 7th one require more general abilities.” Although we felt that they did not answer our question, we understood that they “did not want” us to use non-generative models. On the day of the competition, we also saw many teams combining the output of CV models with questions to create new prompts for LLM to generate results. At that moment, besides admiring the creativity of other teams, we also regretted misunderstanding the organizers’ intentions and not thinking in the direction of combining image recognition with LLM. This is the most regrettable part of the competition for me.</p>
+<h3 id="Reflection"><a href="#Reflection" class="headerlink" title="Reflection"></a>Reflection</h3><p>This time’s competition felt regretful because we didn’t give our all. Although we received praise from the judges in the end: “It’s a pity! You got fourth place! And you’re only juniors, so young compared to the other teams who are mostly graduate students!”, I still felt it was probably just comforting words. However, it did improve my mood a bit after hearing it. How miraculous. But this experience gave me the opportunity to explore the entire framework of LLM and even a chance to actually use deepspeed to fine-tune a model, which perfectly aligns with the tasks the lab professor will assign me in the future. So now, I’ve changed my mindset and think that having this kind of gain from the competition is already sufficient. I’ll leave the rest to my future self to strive for. I hope my future self, looking back at the self who participated in this competition, will feel that I have grown a lot!</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Life/" class="category-chain-item">Life</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Hackthon/">#Hackthon</a>
+      
+        <a href="/tags/Competition/">#Competition</a>
+      
+        <a href="/tags/gpt-translated/">#gpt-translated</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>[Life] 2024 TSMC IT CareerHack Campus Hackathon</div>
+      <div>https://torrid-fish.github.io/life-tsmc_2024_hackthon/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Torrid-Fish</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 27, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <!-- TODO 換語言換頁 -->
+                      <a href="/zh-tw/tech-graphviz_light_dark_support/" title="[技術] 讓Graphviz也支援亮暗主題色變化吧">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">[技術] 讓Graphviz也支援亮暗主題色變化吧</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/ja/life-tsmc_2024_hackthon/" title="[生活] 2024 TSMC ITキャリアハックキャンパスハッカソン">
+                        <span class="hidden-mobile">[生活] 2024 TSMC ITキャリアハックキャンパスハッカソン</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('mermaid' in window) {
+        mermaid.init();
+      }
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch-en" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input-en" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result-en"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalSearch-zh-tw" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input-zh-tw" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result-zh-tw"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalSearch-ja" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input-ja" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result-ja"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       Powered by: <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> + <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br>Last Updated:
+      2024-09-20
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/others/js/ruby_gen.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

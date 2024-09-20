@@ -1,0 +1,833 @@
+
+
+<!DOCTYPE html>
+<html lang="en,zh-tw,ja" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/cute_icon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Torrid-Fish">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="初探LLM，並很簡單的用LoRA來finetune一個LLaVA模型。雖然沒有得獎，但仍然是一次很好的體驗。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[生活] 2024 TSMC IT CareerHack 校園黑客松">
+<meta property="og:url" content="https://torrid-fish.github.io/zh-tw/life-tsmc_2024_hackthon/index.html">
+<meta property="og:site_name" content="Torrid Blog">
+<meta property="og:description" content="初探LLM，並很簡單的用LoRA來finetune一個LLaVA模型。雖然沒有得獎，但仍然是一次很好的體驗。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://torrid-fish.github.io/img/life/tsmc_it.jpg">
+<meta property="article:published_time" content="2024-01-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-20T04:31:06.160Z">
+<meta property="article:author" content="Torrid Fish">
+<meta property="article:tag" content="黑客松">
+<meta property="article:tag" content="競賽">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://torrid-fish.github.io/img/life/tsmc_it.jpg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>[生活] 2024 TSMC IT CareerHack 校園黑客松 - Torrid Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/others/css/accent.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"torrid-fish.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/zh-tw/">
+      <strong>Torrid Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/zh-tw/">
+                <i class="fa fa-home"></i>
+                <span>首頁</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/zh-tw/archives/">
+                <i class="fa fa-calendar"></i>
+                <span>文章清單</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/zh-tw/categories/">
+                <i class="iconfont icon-category"></i>
+                <span>分類</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/zh-tw/tags/">
+                <i class="iconfont icon-tags"></i>
+                <span>標籤</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/zh-tw/about/">
+                <i class="fa fa-user"></i>
+                <span>關於我</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-globe"></i>
+                <span>語言</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  
+                    <!-- For languge menu. -->
+                    <a class="dropdown-item" href="/life-tsmc_2024_hackthon/"> 
+                      
+                      <span>English</span>
+                    </a>
+                  
+                
+                  
+                  
+                  
+                  
+                    <!-- For languge menu. -->
+                    <a class="dropdown-item" href="/zh-tw/life-tsmc_2024_hackthon/"> 
+                      
+                      <span>繁體中文</span>
+                    </a>
+                  
+                
+                  
+                  
+                  
+                  
+                    <!-- For languge menu. -->
+                    <a class="dropdown-item" href="/ja/life-tsmc_2024_hackthon/"> 
+                      
+                      <span>日本語</span>
+                    </a>
+                  
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch-zh-tw" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/../../img/life/tsmc_it.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="[生活] 2024 TSMC IT CareerHack 校園黑客松"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-01-27 00:00" pubdate>
+          2024年1月27日
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">[生活] 2024 TSMC IT CareerHack 校園黑客松</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="參加"><a href="#參加" class="headerlink" title="參加"></a>參加</h3><p>這次是受到了晨鍾的邀請，來參加<a target="_blank" rel="noopener" href="https://www.tsmc.com/static/english/careers/2024Careerhack/index.html">今年2024年的台積電校園黑客松</a>。想說趁著上次在梅竹黑客松得到的好成績，順著這個氣勢繼續看能不能拿下第二個獎項，於是便報名了這個比賽。</p>
+<p>我們一開始在看主題時，因為我和禾堃在的讀書會已經讀過許多與CV(Computer Vision)相關的paper與實作，因此我們決定選擇「AI看圖說故事」這個主題。</p>
+<h3 id="初賽"><a href="#初賽" class="headerlink" title="初賽"></a>初賽</h3><p>為了能在1&#x2F;26，1&#x2F;27實際到他們台北的辦公室比決賽，我們必須參加線上初賽。基本上就是測試有沒有寫程式的能力，語言提供了像是C++, python, Java等等可以選擇，題目也相對簡單，我的題目就只是greedy還有一些很基礎的題目。而朋友那裡聽到似乎還有tree相關的題目就是了。不過真的是偏基礎，<del>讓我回想起大一程設晚上上機的時光了</del>。</p>
+<p>總之初賽我個人感覺初賽和決賽的東西沒什麼關連啦。覺得用這個機制篩人蠻意外的。(據說報名是100多組，他們最後要選24組的樣子)</p>
+<h3 id="決賽"><a href="#決賽" class="headerlink" title="決賽"></a>決賽</h3><p>之後就是通知我們進了決賽，還有題目及黑客松的時間之類的資訊。我們也就開始準備。</p>
+<h4 id="題目：AI看圖說故事"><a href="#題目：AI看圖說故事" class="headerlink" title="題目：AI看圖說故事"></a>題目：AI看圖說故事</h4><p>主辦方提供了一個dataset，裡面有一些有安全帽的圖片，以及和gpt的對話結果；還有利用LoRA pretrained好的LLaVA模型。我們的任務是利用這些資訊，來做出一個system可以對一個圖片進行處理，並回答以下問題：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br><span class="hljs-attr">&quot;Q1&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Is there any people not wearing a helmets? Please answer with true or false.&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;Q2&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;How many people are there in the image? Please give a single integer answer.&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;Q3&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;How many people are there and wear a helmets in the image? Please give a single integer answer.&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;Q4&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;How many people are there and not wear a helmets in the image? Please give a single integer answer.&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;Q5&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Tell the color of the helmets that people wear in the image from this list: red, yellow, blue, white, green, orange, black.The answer may be more than one color.If there is no one wear a helmets, please answer None as response. &quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;Q6&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;What is the warning message shown in the image? Just give me the warning sentence.&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;Q7&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Is there anyone violating the warning message describe in the image?  Please answer with true or false.&quot;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+<p>最後，會是使用主辦方提供的private set來進行評分。最終分數的7成會是以上述輸出的結果正確性來判斷。只有3成是現場demo的表現來決定。</p>
+<p>這樣的評分機制除了和我上次參加的梅竹黑客松完全不一樣之外，還有以下問題讓我蠻不理解的：<br>他的private set只有107張圖片，讓我們生成結果的時間有快1個半小時，如果有心想要的話手動把所有答案手動標注也不是辦不到的事。這樣要如何確保沒有組別手動把所有答案填上去？雖然有人巡視並告誡我們不要作弊，但還是想想覺得不太合理。</p>
+<h4 id="在GCP-Google-Cloud-Platform-上遇到的問題"><a href="#在GCP-Google-Cloud-Platform-上遇到的問題" class="headerlink" title="在GCP(Google Cloud Platform)上遇到的問題"></a>在GCP(Google Cloud Platform)上遇到的問題</h4><p>而這次他們也請google cloud提供了運算資源讓我們使用，但其實就我們的使用過程來說，並不是很順利。</p>
+<p>我們在嘗試finetune instruct-BLIP時，就曾經把RAM塞爆，而導致整個instance直接壞掉，而在賽前也有一次不知為何我們的instance也壞掉了，還收到了他們寄來的信問我們是不是做了什麼讓它壞掉，但我們也完全不懂到底發生了什麼，我們其實也沒有做什麼特殊的操作就是了。</p>
+<p>舉例來說，他們提供給我們的instance就有壞掉過兩次：</p>
+<ul>
+<li>第一次是發生在黑客松後2天，我就突然收到了主辦方信來的信提醒我們我們的instance爆了，問我們是不是有下什麼指令。但其實我們也沒有特別做什麼操作，所以我們其實到現在還是不懂那時候機器到底發生了什麼。</li>
+<li>而第二次是發生在比賽前一天，那時候我們把instruct-BLIP打算load進instance來finetune，結果似乎是把disk塞爆了，結果整個instance也就這樣掛了。</li>
+</ul>
+<p>無獨有偶，除了instance之外，提給我們的bucket也有出現問題：<br>在比賽前以及比賽時，我和禾堃都有遇到要把大檔案從instance丟到bucket時permission error的問題。是到了當天他們google cloud小組的人員來提供支援後，才發現問題是因為他會多向bucket要一個get的指令，而我們的instance一開始似乎沒有這個權限，所以才會造成這個問題。</p>
+<p>不過要提到的是他們工作人員其實真的非常積極，遇到問題基本上都是馬上處理，那時候在修bucket的問題我十分的感受到他們的積極度，也因此倍感壓力(有6~7個人圍著自己的壓力真的不是開玩笑的…)。總之，真的很感謝他們的幫忙！</p>
+<h4 id="結果"><a href="#結果" class="headerlink" title="結果"></a>結果</h4><p>雖然整個比賽遇到了許多狀況：像是許久未好的腸胃炎、被google拒絕intern的申請、還有加上第二天的伙伴少了一人(他跑去日本了😢)等等，或多或少影響了這兩天的發揮，所以做的事真的遠低於自己的期待值。但我覺得這次沒有發揮好更重要的原因其實是「我們太晚開始做」以及「理解錯題意」。</p>
+<h5 id="太晚開始"><a href="#太晚開始" class="headerlink" title="太晚開始"></a>太晚開始</h5><p>因為我們從工作坊結束後，基本上只有簡單地進行paper review，並且針對LLaVA, BLIP, Flamingo三種架構進行測試，而我們是到很後期才發現主辦方提供給我們的資源其實根本不夠BLIP還有Flamingo進行使用，所以有很多的時間都是對最後的結果相對沒有幫助的。另外，我在那幾天因為身體的關係，其實也只有簡單的地對資料進行分析，並沒有至少先跑過他的sample code來finetune LLaVA，這件事是直到比賽當天才做的，所以我覺得我們真的太晚才開始動工了，以比賽兩天我們能做出的結果，或許最多也就只有這樣吧。</p>
+<h5 id="理解錯題意"><a href="#理解錯題意" class="headerlink" title="理解錯題意"></a>理解錯題意</h5><p>在最一開始我們看到題目時，我們幾個想到的就是「前面幾題真的需要用到生成式模型嗎？」要求的問題其實都用我們學過的CV model應該都能很好解決，為什麼有需要用到生成式模型(當然像是Q7這種要問邏輯問題的，我們也覺得需要用到)?於是乎我們就寫信給主辦方詢問能否使用computer vision的模型回答，但得到他們的回應是「不建議使用專材型的model一一回答，因為像是第7題就需要較general的能力」。雖然我們也覺得他沒有回答到我們的問題，但我們也就理解為他們「不希望」我們使用非生成式模型了。結果到了比賽當天，我們也看到了許多組將CV model的輸出結合question成新的prompt放入LLM，讓他生成結果。我們當下除了感嘆其它組別的創意，也懊悔那時理解錯主辦方的意思，也就沒有往結合影像辨識與LLM的方向去思考。這是這次比賽中我覺得最可惜的地方。</p>
+<h3 id="心得"><a href="#心得" class="headerlink" title="心得"></a>心得</h3><p>這一次的比賽因為沒有盡全力所以感覺到很可惜，雖然最後收到了評審的讚美：「你們很可惜耶！你們是boarder(第四名)！而且你們才大三，超年輕的，其他組都是研究所了的吧！」，而且我也覺得大機率是安慰話，不過聽了心情還是有變得比較好，真是神奇。不過這一次的經驗正好可以讓我初探LLM的整個架構，並且還有機會實際用deepspeed來finetune一個模型，可以說是完美地對上了實驗室教授之後要給我的任務。所以我現在也換個心態，認為這次的比賽能有這樣的收獲其實就已經很足夠了，其他的就留給之後的自己努力。希望未來的自己回來看參加這場比賽的自己，能夠覺得自己已經成長很多！</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/zh-tw/categories/%E7%94%9F%E6%B4%BB/" class="category-chain-item">生活</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/zh-tw/tags/%E9%BB%91%E5%AE%A2%E6%9D%BE/">#黑客松</a>
+      
+        <a href="/zh-tw/tags/%E7%AB%B6%E8%B3%BD/">#競賽</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>[生活] 2024 TSMC IT CareerHack 校園黑客松</div>
+      <div>https://torrid-fish.github.io/zh-tw/life-tsmc_2024_hackthon/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Torrid-Fish</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>發布於</div>
+          <div>2024年1月27日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>許可協議</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <!-- TODO 換語言換頁 -->
+                      <a href="/ja/life-tsmc_2024_hackthon/" title="[生活] 2024 TSMC ITキャリアハックキャンパスハッカソン">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">[生活] 2024 TSMC ITキャリアハックキャンパスハッカソン</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/life-end_of_japanese_conversation_3/" title="[Life] Japanese conversation three ends">
+                        <span class="hidden-mobile">[Life] Japanese conversation three ends</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目錄</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('mermaid' in window) {
+        mermaid.init();
+      }
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch-en" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜尋</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input-en" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">關鍵字</label>
+        </div>
+        <div class="list-group" id="local-search-result-en"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalSearch-zh-tw" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜尋</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input-zh-tw" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">關鍵字</label>
+        </div>
+        <div class="list-group" id="local-search-result-zh-tw"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalSearch-ja" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜尋</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input-ja" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">關鍵字</label>
+        </div>
+        <div class="list-group" id="local-search-result-ja"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       Powered by: <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> + <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br>Last Updated:
+      2024-09-20
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/others/js/ruby_gen.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允許 JavaScript 運行的環境下瀏覽效果更佳</div>
+  </noscript>
+</body>
+</html>

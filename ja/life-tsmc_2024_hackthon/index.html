@@ -1,0 +1,836 @@
+
+
+<!DOCTYPE html>
+<html lang="en,zh-tw,ja" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/cute_icon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Torrid-Fish">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="LLMの初歩を探り、LoRAを使用してLLaVAモデルを微調整しました。賞を受賞することはありませんでしたが、それでも素晴らしい経験でした。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[生活] 2024 TSMC ITキャリアハックキャンパスハッカソン">
+<meta property="og:url" content="https://torrid-fish.github.io/ja/life-tsmc_2024_hackthon/index.html">
+<meta property="og:site_name" content="Torrid Blog">
+<meta property="og:description" content="LLMの初歩を探り、LoRAを使用してLLaVAモデルを微調整しました。賞を受賞することはありませんでしたが、それでも素晴らしい経験でした。">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://torrid-fish.github.io/img/life/tsmc_it.jpg">
+<meta property="article:published_time" content="2024-01-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-09-20T04:31:06.160Z">
+<meta property="article:author" content="Torrid Fish">
+<meta property="article:tag" content="gpt-translated">
+<meta property="article:tag" content="ハッカソン">
+<meta property="article:tag" content="競技">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://torrid-fish.github.io/img/life/tsmc_it.jpg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>[生活] 2024 TSMC ITキャリアハックキャンパスハッカソン - Torrid Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/others/css/accent.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"torrid-fish.github.io","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/ja/">
+      <strong>Torrid Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/ja/">
+                <i class="fa fa-home"></i>
+                <span>ホーム</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/ja/archives/">
+                <i class="fa fa-calendar"></i>
+                <span>アーカイブ</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/ja/categories/">
+                <i class="iconfont icon-category"></i>
+                <span>カテゴリ</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/ja/tags/">
+                <i class="iconfont icon-tags"></i>
+                <span>タグ</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/ja/about/">
+                <i class="fa fa-user"></i>
+                <span>プロフィール</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-globe"></i>
+                <span>言語</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  
+                    <!-- For languge menu. -->
+                    <a class="dropdown-item" href="/life-tsmc_2024_hackthon/"> 
+                      
+                      <span>English</span>
+                    </a>
+                  
+                
+                  
+                  
+                  
+                  
+                    <!-- For languge menu. -->
+                    <a class="dropdown-item" href="/zh-tw/life-tsmc_2024_hackthon/"> 
+                      
+                      <span>繁體中文</span>
+                    </a>
+                  
+                
+                  
+                  
+                  
+                  
+                    <!-- For languge menu. -->
+                    <a class="dropdown-item" href="/ja/life-tsmc_2024_hackthon/"> 
+                      
+                      <span>日本語</span>
+                    </a>
+                  
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch-ja" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/../../img/life/tsmc_it.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="[生活] 2024 TSMC ITキャリアハックキャンパスハッカソン"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-01-27 00:00" pubdate>
+          2024年1月27日
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 閲覧
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">[生活] 2024 TSMC ITキャリアハックキャンパスハッカソン</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="参加"><a href="#参加" class="headerlink" title="参加"></a>参加</h3><p>この度、晨鍾の招待を受け、<a target="_blank" rel="noopener" href="https://www.tsmc.com/static/english/careers/2024Careerhack/index.html">2024年の台湾セミコンダクター社のキャンパスハッカソン</a> に参加することにしました。前回の梅竹ハッカソンでの好成績に続く勢いを活かし、もう一つの賞を獲得できるかチャレンジしてみようと思い、大会にエントリーしました。</p>
+<p>私たちは最初、テーマを選定する際、私と禾堃が参加している読書会で既にCV（Computer Vision）に関連する多くの論文と実装を読んでいたため、このテーマ「AIが画像を見て物語を語る」を選択することにしました。</p>
+<h3 id="予選"><a href="#予選" class="headerlink" title="予選"></a>予選</h3><p>1&#x2F;26、1&#x2F;27に彼らの台北オフィスで決勝戦に出られるためには、オンライン予選に参加する必要があります。基本的にはプログラミング能力のテストであり、C++、Python、Javaなどの言語が選択肢となります。問題は比較的簡単で、私の課題は単に貪欲法とその他の基本的な問題です。友人からは木に関連する問題もあると聞きましたが、実際にはかなり基本的な内容で、大学一年生の頃のプログラミングの実習を思い出させるものでした。</p>
+<p>とにかく予選をやった感じでは、予選と決勝のものはあんまり関連ないと思うな。この仕組みで選ぶのはちょっと意外だと思う。(報告によると、100組以上がエントリーしたらしいけど、最終的に24組を選ぶみたい)</p>
+<h3 id="決賽"><a href="#決賽" class="headerlink" title="決賽"></a>決賽</h3><p>その後、私たちに決勝進出の通知と、問題やハッカソンの時間などの情報が届きました。そして私たちは準備を開始しました。</p>
+<h4 id="タイトル：AIが画像を見て物語を語る"><a href="#タイトル：AIが画像を見て物語を語る" class="headerlink" title="タイトル：AIが画像を見て物語を語る"></a>タイトル：AIが画像を見て物語を語る</h4><p>主催者はデータセットを提供しており、安全帽をかぶっている画像やGPTとの対話の結果、さらには事前に訓練されたLoRAモデルを用いたLLaVAモデルが含まれています。私たちのミッションは、これらの情報を活用して、画像を処理し、以下の質問に答えるシステムを作ることです。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br><span class="hljs-attr">&quot;Q1&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Is there any people not wearing a helmets? Please answer with true or false.&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;Q2&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;How many people are there in the image? Please give a single integer answer.&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;Q3&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;How many people are there and wear a helmets in the image? Please give a single integer answer.&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;Q4&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;How many people are there and not wear a helmets in the image? Please give a single integer answer.&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;Q5&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Tell the color of the helmets that people wear in the image from this list: red, yellow, blue, white, green, orange, black.The answer may be more than one color.If there is no one wear a helmets, please answer None as response. &quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;Q6&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;What is the warning message shown in the image? Just give me the warning sentence.&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;Q7&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Is there anyone violating the warning message describe in the image?  Please answer with true or false.&quot;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+<p>最後，使用主催者提供的プライベートセットで評価を行います。最終スコアの70％は、前述の出力の正確性に基づいて判定されます。30％は現地デモのパフォーマンスによって決定されます。</p>
+<p>このような評価機構は、前回参加したメーチューハッカソンとはまったく異なるだけでなく、次のような問題点も理解しづらいです。<br>彼のプライベートセットには107枚しか画像がありません。結果を生成するのに1時間半かかりますが、手動ですべての回答をラベル付けすることも可能です。このようにして、手動で回答を入力するチームがいないことをどのように確認すればよいでしょうか？誰かがチェックし、不正行為を防ぐようにと忠告していますが、それでも不正行為を疑われるのは納得がいきません。</p>
+<h4 id="GCP（Google-Cloud-Platform）で遭遇した問題"><a href="#GCP（Google-Cloud-Platform）で遭遇した問題" class="headerlink" title="GCP（Google Cloud Platform）で遭遇した問題"></a>GCP（Google Cloud Platform）で遭遇した問題</h4><p>そして今回、彼らはGoogle Cloudに計算リソースを提供してくれたのですが、実際には私たちの使用する過程で、うまくいかなかったと言えます。</p>
+<p>私たちはInstruct-BLIPのfinetuneを試みる際に、RAMをいっぱいにしてしまい、インスタンス全体が直接壊れてしまったことがあります。また、大会前にも理由もわからずにインスタンスが壊れてしまい、彼らから壊れた理由を尋ねる手紙を受け取りましたが、私たちは何が起こったのか全くわかりません。特に特別な操作はしていないのです。</p>
+<p>例えば、彼らが提供したインスタンスは、2回壊れたことがあります。</p>
+<ul>
+<li>最初の出来事はハッカソンの2日後に起こりました。突然、主催者からインスタンスがダウンしたという通知が届きました。何かコマンドを実行したかと聞かれましたが、実際には特に操作していませんでした。そのため、今でもその時に何が起こったのか理解していません。</li>
+<li>そして2回目は、試合の前日に発生しました。その時、私たちはinstruct-BLIPをinstanceにロードしてfine-tuneするつもりでしたが、結果的にディスクがいっぱいになってしまい、その結果、インスタンス全体がダウンしてしまいました。</li>
+</ul>
+<p>偶発的に、インスタンス以外にも、私たちのバケットに問題が発生しています:<br>当比赛之前和比赛进行中，我和禾堃都遇到了将大文件从instance上传到bucket时出现权限错误的问题。直到当天谷歌云小组的人员前来提供支援后，我们才发现问题是因为他会向bucket发送一个获取指令，而我们的instance起初似乎没有这个权限，所以才会导致这个问题。<br>zh-tw, ja</p>
+<p>ただし、彼らのスタッフは非常に積極的であり、問題が発生するとすぐに対処していることを指摘しておきます。バケツの修理の問題に直面したとき、彼らの積極性を強く感じ、そのために非常にプレッシャーを感じました（6〜7人の人たちに囲まれるプレッシャーは冗談ではありません…）。とにかく、彼らの助けに本当に感謝しています！</p>
+<h4 id="結果"><a href="#結果" class="headerlink" title="結果"></a>結果</h4><p>たとえば、長い間改善されていなかった胃腸炎、Googleによるインターンの申し込みの拒否、そして翌日にパートナーが一人欠けていたことなど、さまざまな問題に直面しましたが、これらはなんらかの形でこの二日間のパフォーマンスに影響を与えました。したがって、自分の期待に遠く及ばない結果となりました。しかし、私たちの成績が芳しくなかった本当の理由は、実は「活動を開始するのが遅かった」と「問題の意味を誤解していた」からだと思います。</p>
+<h5 id="遅すぎる始まりです。"><a href="#遅すぎる始まりです。" class="headerlink" title="遅すぎる始まりです。"></a>遅すぎる始まりです。</h5><p>私たちはワークショップ終了後、基本的には単純なpaper reviewを行い、LLaVA、BLIP、Flamingoの3つの構造に対してテストを行いました。そして、組織から提供されたリソースが実際にはBLIPやFlamingoの使用には全く足りないことに最後の段階で気づいたため、最終結果に対してはあまり助けにならない時間がたくさんありました。その他にも、その数日間私は体調の関係でデータを単純に分析するだけで、少なくとも彼のサンプルコードを先に実行してLLaVAをfinetuneすることはせず、コンテストの当日までそのことに気づきませんでした。したがって、私たちは本当に遅す</p>
+<h5 id="問題の意味を誤解しています。"><a href="#問題の意味を誤解しています。" class="headerlink" title="問題の意味を誤解しています。"></a>問題の意味を誤解しています。</h5><p>最初に問題を見たとき、私たちが考えたのは、「前の問題は本当に生成モデルが必要なのか？」というものでした。実際に要求される問題は、私たちが学んだCVモデルで十分に解決できるはずです。なぜ生成モデルが必要なのでしょうか？（もちろん、Q7のような論理的な問題を尋ねる場合も必要だと感じます）。そのため、私たちは主催者にコンピュータビジョンモデルを使用して回答しても良いか尋ねる手紙を書きましたが、彼らからの回答は「専門的なモデルを使用した回答はお勧めしません。なぜなら、例えば第7問はより一般</p>
+<h3 id="感想"><a href="#感想" class="headerlink" title="感想"></a>感想</h3><p>今回の競技は全力を尽くさなかったため、とても惜しい気持ちになりました。最終的に審査員からの称賛を受けましたが、「とても惜しい！あなたたちはボーダー（第四位）です！しかも大学三年生で、とても若いですね。他のチームはおそらく大学院生ですね！」と。それでもそれは慰め言葉だと感じますが、聞いて気持ちが少し楽になりました。本当に不思議ですね。ただ、今回の経験はちょうどLLMの全体的な構造を初めて理解するいい機会であり、さらに実際にdeepspeedを使ってモデルを微調整する機会がありました。これはまさに、研究</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/ja/categories/%E7%94%9F%E6%B4%BB/" class="category-chain-item">生活</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/ja/tags/gpt-translated/">#gpt-translated</a>
+      
+        <a href="/ja/tags/%E3%83%8F%E3%83%83%E3%82%AB%E3%82%BD%E3%83%B3/">#ハッカソン</a>
+      
+        <a href="/ja/tags/%E7%AB%B6%E6%8A%80/">#競技</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>[生活] 2024 TSMC ITキャリアハックキャンパスハッカソン</div>
+      <div>https://torrid-fish.github.io/ja/life-tsmc_2024_hackthon/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>著者</div>
+          <div>Torrid-Fish</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>作成日</div>
+          <div>2024年1月27日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>著作権</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <!-- TODO 換語言換頁 -->
+                      <a href="/life-tsmc_2024_hackthon/" title="[Life] 2024 TSMC IT CareerHack Campus Hackathon">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">[Life] 2024 TSMC IT CareerHack Campus Hackathon</span>
+                        <span class="visible-mobile">前の記事</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/zh-tw/life-tsmc_2024_hackthon/" title="[生活] 2024 TSMC IT CareerHack 校園黑客松">
+                        <span class="hidden-mobile">[生活] 2024 TSMC IT CareerHack 校園黑客松</span>
+                        <span class="visible-mobile">次の記事</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>見出し</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('mermaid' in window) {
+        mermaid.init();
+      }
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch-en" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">検索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input-en" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">キーワード</label>
+        </div>
+        <div class="list-group" id="local-search-result-en"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalSearch-zh-tw" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">検索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input-zh-tw" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">キーワード</label>
+        </div>
+        <div class="list-group" id="local-search-result-zh-tw"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalSearch-ja" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">検索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input-ja" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">キーワード</label>
+        </div>
+        <div class="list-group" id="local-search-result-ja"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       Powered by: <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> + <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br>Last Updated:
+      2024-09-20
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/others/js/ruby_gen.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">ブログは JavaScript を有効にすると最適に機能します</div>
+  </noscript>
+</body>
+</html>
