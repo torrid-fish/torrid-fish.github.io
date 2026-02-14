@@ -16,19 +16,19 @@
   <meta name="author" content="Torrid-Fish">
   <meta name="keywords" content="">
   
-    <meta name="description" content="初探LLM，並很簡單的用LoRA來finetune一個LLaVA模型。雖然沒有得獎，但仍然是一次很好的體驗。">
+    <meta name="description" content="First exploration of LLM, with a simple LoRA finetuning of a LLaVA model. Although we didn&#39;t win, it was still a great experience.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[生活] 2024 TSMC IT CareerHack 校園黑客松">
+<meta property="og:title" content="[Life] 2024 TSMC IT CareerHack Campus Hackathon">
 <meta property="og:url" content="https://torrid-fish.github.io/life-tsmc_2024_hackthon/index.html">
 <meta property="og:site_name" content="Torrid Blog">
-<meta property="og:description" content="初探LLM，並很簡單的用LoRA來finetune一個LLaVA模型。雖然沒有得獎，但仍然是一次很好的體驗。">
-<meta property="og:locale" content="zh_TW">
+<meta property="og:description" content="First exploration of LLM, with a simple LoRA finetuning of a LLaVA model. Although we didn&#39;t win, it was still a great experience.">
+<meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://torrid-fish.github.io/img/life/tsmc_2024_hackthon/tsmc_it.jpg">
 <meta property="article:published_time" content="2024-01-26T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-02-14T09:28:42.268Z">
+<meta property="article:modified_time" content="2026-02-14T10:18:02.156Z">
 <meta property="article:author" content="Torrid Fish">
-<meta property="article:tag" content="競賽">
-<meta property="article:tag" content="黑客松">
+<meta property="article:tag" content="Competition">
+<meta property="article:tag" content="Hackathon">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://torrid-fish.github.io/img/life/tsmc_2024_hackthon/tsmc_it.jpg">
   
@@ -36,7 +36,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>[生活] 2024 TSMC IT CareerHack 校園黑客松 - Torrid Blog</title>
+  <title>[Life] 2024 TSMC IT CareerHack Campus Hackathon - Torrid Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -206,7 +206,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="[生活] 2024 TSMC IT CareerHack 校園黑客松"></span>
+            <span id="subtitle" data-typed-text="[Life] 2024 TSMC IT CareerHack Campus Hackathon"></span>
           
         </div>
 
@@ -218,7 +218,7 @@
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
         <time datetime="2024-01-27 00:00" pubdate>
-          2024年1月27日
+          January 27, 2024
         </time>
       </span>
     
@@ -270,33 +270,33 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">[生活] 2024 TSMC IT CareerHack 校園黑客松</h1>
+            <h1 style="display: none">[Life] 2024 TSMC IT CareerHack Campus Hackathon</h1>
             
             
               <div class="markdown-body">
                 
-                <h3 id="參加"><a href="#參加" class="headerlink" title="參加"></a>參加</h3><p>這次是受到了晨鍾的邀請，來參加<a target="_blank" rel="noopener" href="https://www.tsmc.com/static/english/careers/2024Careerhack/index.html">今年2024年的台積電校園黑客松</a>。想說趁著上次在梅竹黑客松得到的好成績，順著這個氣勢繼續看能不能拿下第二個獎項，於是便報名了這個比賽。</p>
-<p>我們一開始在看主題時，因為我和禾堃在的讀書會已經讀過許多與CV(Computer Vision)相關的paper與實作，因此我們決定選擇「AI看圖說故事」這個主題。</p>
-<h3 id="初賽"><a href="#初賽" class="headerlink" title="初賽"></a>初賽</h3><p>為了能在1&#x2F;26，1&#x2F;27實際到他們台北的辦公室比決賽，我們必須參加線上初賽。基本上就是測試有沒有寫程式的能力，語言提供了像是C++, python, Java等等可以選擇，題目也相對簡單，我的題目就只是greedy還有一些很基礎的題目。而朋友那裡聽到似乎還有tree相關的題目就是了。不過真的是偏基礎，<del>讓我回想起大一程設晚上上機的時光了</del>。</p>
-<p>總之初賽我個人感覺初賽和決賽的東西沒什麼關連啦。覺得用這個機制篩人蠻意外的。(據說報名是100多組，他們最後要選24組的樣子)</p>
-<h3 id="決賽"><a href="#決賽" class="headerlink" title="決賽"></a>決賽</h3><p>之後就是通知我們進了決賽，還有題目及黑客松的時間之類的資訊。我們也就開始準備。</p>
-<h4 id="題目：AI看圖說故事"><a href="#題目：AI看圖說故事" class="headerlink" title="題目：AI看圖說故事"></a>題目：AI看圖說故事</h4><p>主辦方提供了一個dataset，裡面有一些有安全帽的圖片，以及和gpt的對話結果；還有利用LoRA pretrained好的LLaVA模型。我們的任務是利用這些資訊，來做出一個system可以對一個圖片進行處理，並回答以下問題：</p>
+                <h3 id="Participation"><a href="#Participation" class="headerlink" title="Participation"></a>Participation</h3><p>I was invited by Chen-Zhong to participate in <a target="_blank" rel="noopener" href="https://www.tsmc.com/static/english/careers/2024Careerhack/index.html">TSMC’s 2024 Campus Hackathon</a>. Riding on the momentum from our good results at the Mei-Chu Hackathon, I wanted to see if we could win a second award, so I signed up for this competition.</p>
+<p>When we were looking at the themes, since He-Kun and I had already read many papers and implementations related to CV (Computer Vision) in our reading group, we decided to choose the “AI Image Storytelling” theme.</p>
+<h3 id="Preliminary-Round"><a href="#Preliminary-Round" class="headerlink" title="Preliminary Round"></a>Preliminary Round</h3><p>To actually compete in the finals at their Taipei office on 1&#x2F;26 and 1&#x2F;27, we had to participate in the online preliminary round. Basically, it was testing programming ability, with languages like C++, Python, Java to choose from. The problems were relatively simple - mine were just greedy algorithms and some very basic problems. I heard from friends that there were also tree-related problems. But it was really quite basic, <del>reminds me of the freshman programming late-night sessions</del>.</p>
+<p>Anyway, I personally feel the preliminaries and finals had little connection. I found it quite surprising they used this mechanism for screening. (I heard there were over 100 teams registered, and they eventually selected 24 teams)</p>
+<h3 id="Finals"><a href="#Finals" class="headerlink" title="Finals"></a>Finals</h3><p>After that, we were notified we made it to the finals, along with information about the problem and hackathon schedule. We started preparing.</p>
+<h4 id="Problem-AI-Image-Storytelling"><a href="#Problem-AI-Image-Storytelling" class="headerlink" title="Problem: AI Image Storytelling"></a>Problem: AI Image Storytelling</h4><p>The organizers provided a dataset containing images with safety helmets and GPT conversation results, plus a LLaVA model pretrained with LoRA. Our task was to use this information to create a system that could process images and answer these questions:</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br><span class="hljs-attr">&quot;Q1&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Is there any people not wearing a helmets? Please answer with true or false.&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;Q2&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;How many people are there in the image? Please give a single integer answer.&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;Q3&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;How many people are there and wear a helmets in the image? Please give a single integer answer.&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;Q4&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;How many people are there and not wear a helmets in the image? Please give a single integer answer.&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;Q5&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Tell the color of the helmets that people wear in the image from this list: red, yellow, blue, white, green, orange, black.The answer may be more than one color.If there is no one wear a helmets, please answer None as response. &quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;Q6&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;What is the warning message shown in the image? Just give me the warning sentence.&quot;</span><span class="hljs-punctuation">,</span><br><span class="hljs-attr">&quot;Q7&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Is there anyone violating the warning message describe in the image?  Please answer with true or false.&quot;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
-<p>最後，會是使用主辦方提供的private set來進行評分。最終分數的7成會是以上述輸出的結果正確性來判斷。只有3成是現場demo的表現來決定。</p>
-<p>這樣的評分機制除了和我上次參加的梅竹黑客松完全不一樣之外，還有以下問題讓我蠻不理解的：<br>他的private set只有107張圖片，讓我們生成結果的時間有快1個半小時，如果有心想要的話手動把所有答案手動標注也不是辦不到的事。這樣要如何確保沒有組別手動把所有答案填上去？雖然有人巡視並告誡我們不要作弊，但還是想想覺得不太合理。</p>
-<h4 id="在GCP-Google-Cloud-Platform-上遇到的問題"><a href="#在GCP-Google-Cloud-Platform-上遇到的問題" class="headerlink" title="在GCP(Google Cloud Platform)上遇到的問題"></a>在GCP(Google Cloud Platform)上遇到的問題</h4><p>而這次他們也請google cloud提供了運算資源讓我們使用，但其實就我們的使用過程來說，並不是很順利。</p>
-<p>我們在嘗試finetune instruct-BLIP時，就曾經把RAM塞爆，而導致整個instance直接壞掉，而在賽前也有一次不知為何我們的instance也壞掉了，還收到了他們寄來的信問我們是不是做了什麼讓它壞掉，但我們也完全不懂到底發生了什麼，我們其實也沒有做什麼特殊的操作就是了。</p>
-<p>舉例來說，他們提供給我們的instance就有壞掉過兩次：</p>
+<p>Finally, scoring would be done using a private test set provided by the organizers. 70% of the final score would be based on the correctness of the above outputs. Only 30% would be determined by the on-site demo performance.</p>
+<p>This scoring mechanism was completely different from the Mei-Chu Hackathon I participated in before, and there were some issues I found quite puzzling:<br>The private set only had 107 images, and they gave us nearly 1.5 hours to generate results. If someone wanted to, manually annotating all the answers wouldn’t be impossible. How could they ensure no team manually filled in all the answers? Although people were monitoring and warning us not to cheat, I still found it somewhat unreasonable.</p>
+<h4 id="Problems-Encountered-on-GCP-Google-Cloud-Platform"><a href="#Problems-Encountered-on-GCP-Google-Cloud-Platform" class="headerlink" title="Problems Encountered on GCP (Google Cloud Platform)"></a>Problems Encountered on GCP (Google Cloud Platform)</h4><p>This time they also had Google Cloud provide computing resources for us to use, but our experience using it wasn’t very smooth.</p>
+<p>When we tried to finetune instruct-BLIP, we once crashed the RAM, causing the entire instance to break. Before the competition, our instance also broke for unknown reasons, and we received an email asking if we did something to break it, but we had no idea what happened - we didn’t do any special operations.</p>
+<p>For example, the instance they provided broke twice:</p>
 <ul>
-<li>第一次是發生在黑客松後2天，我就突然收到了主辦方信來的信提醒我們我們的instance爆了，問我們是不是有下什麼指令。但其實我們也沒有特別做什麼操作，所以我們其實到現在還是不懂那時候機器到底發生了什麼。</li>
-<li>而第二次是發生在比賽前一天，那時候我們把instruct-BLIP打算load進instance來finetune，結果似乎是把disk塞爆了，結果整個instance也就這樣掛了。</li>
+<li>The first time was 2 days after the hackathon when I suddenly received an email from the organizers reminding us that our instance crashed, asking if we ran any commands. But we didn’t do any special operations, so we still don’t understand what happened to the machine.</li>
+<li>The second time was the day before the competition when we tried to load instruct-BLIP into the instance to finetune, apparently filling up the disk, and the entire instance crashed.</li>
 </ul>
-<p>無獨有偶，除了instance之外，提給我們的bucket也有出現問題：<br>在比賽前以及比賽時，我和禾堃都有遇到要把大檔案從instance丟到bucket時permission error的問題。是到了當天他們google cloud小組的人員來提供支援後，才發現問題是因為他會多向bucket要一個get的指令，而我們的instance一開始似乎沒有這個權限，所以才會造成這個問題。</p>
-<p>不過要提到的是他們工作人員其實真的非常積極，遇到問題基本上都是馬上處理，那時候在修bucket的問題我十分的感受到他們的積極度，也因此倍感壓力(有6~7個人圍著自己的壓力真的不是開玩笑的…)。總之，真的很感謝他們的幫忙！</p>
-<h4 id="結果"><a href="#結果" class="headerlink" title="結果"></a>結果</h4><p>雖然整個比賽遇到了許多狀況：像是許久未好的腸胃炎、被google拒絕intern的申請、還有加上第二天的伙伴少了一人(他跑去日本了😢)等等，或多或少影響了這兩天的發揮，所以做的事真的遠低於自己的期待值。但我覺得這次沒有發揮好更重要的原因其實是「我們太晚開始做」以及「理解錯題意」。</p>
-<h5 id="太晚開始"><a href="#太晚開始" class="headerlink" title="太晚開始"></a>太晚開始</h5><p>因為我們從工作坊結束後，基本上只有簡單地進行paper review，並且針對LLaVA, BLIP, Flamingo三種架構進行測試，而我們是到很後期才發現主辦方提供給我們的資源其實根本不夠BLIP還有Flamingo進行使用，所以有很多的時間都是對最後的結果相對沒有幫助的。另外，我在那幾天因為身體的關係，其實也只有簡單的地對資料進行分析，並沒有至少先跑過他的sample code來finetune LLaVA，這件事是直到比賽當天才做的，所以我覺得我們真的太晚才開始動工了，以比賽兩天我們能做出的結果，或許最多也就只有這樣吧。</p>
-<h5 id="理解錯題意"><a href="#理解錯題意" class="headerlink" title="理解錯題意"></a>理解錯題意</h5><p>在最一開始我們看到題目時，我們幾個想到的就是「前面幾題真的需要用到生成式模型嗎？」要求的問題其實都用我們學過的CV model應該都能很好解決，為什麼有需要用到生成式模型(當然像是Q7這種要問邏輯問題的，我們也覺得需要用到)?於是乎我們就寫信給主辦方詢問能否使用computer vision的模型回答，但得到他們的回應是「不建議使用專材型的model一一回答，因為像是第7題就需要較general的能力」。雖然我們也覺得他沒有回答到我們的問題，但我們也就理解為他們「不希望」我們使用非生成式模型了。結果到了比賽當天，我們也看到了許多組將CV model的輸出結合question成新的prompt放入LLM，讓他生成結果。我們當下除了感嘆其它組別的創意，也懊悔那時理解錯主辦方的意思，也就沒有往結合影像辨識與LLM的方向去思考。這是這次比賽中我覺得最可惜的地方。</p>
-<h3 id="心得"><a href="#心得" class="headerlink" title="心得"></a>心得</h3><p>這一次的比賽因為沒有盡全力所以感覺到很可惜，雖然最後收到了評審的讚美：「你們很可惜耶！你們是boarder(第四名)！而且你們才大三，超年輕的，其他組都是研究所了的吧！」，而且我也覺得大機率是安慰話，不過聽了心情還是有變得比較好，真是神奇。不過這一次的經驗正好可以讓我初探LLM的整個架構，並且還有機會實際用deepspeed來finetune一個模型，可以說是完美地對上了實驗室教授之後要給我的任務。所以我現在也換個心態，認為這次的比賽能有這樣的收獲其實就已經很足夠了，其他的就留給之後的自己努力。希望未來的自己回來看參加這場比賽的自己，能夠覺得自己已經成長很多！</p>
+<p>Similarly, besides the instance, there were also problems with the bucket they provided:<br>Before and during the competition, both He-Kun and I encountered permission errors when trying to upload large files from the instance to the bucket. It wasn’t until the Google Cloud team came to provide support that day that they discovered the problem was because it would request an additional “get” command from the bucket, and our instance initially didn’t seem to have this permission, causing this issue.</p>
+<p>However, I must mention that the staff were really very proactive. Basically, they addressed problems immediately. When fixing the bucket issue, I really felt their enthusiasm, which also caused me considerable pressure (the pressure of having 6-7 people surrounding you is no joke…). Anyway, I’m really grateful for their help!</p>
+<h4 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h4><p>Although we encountered many situations during the competition: like my long-lasting gastroenteritis, getting rejected for Google’s internship application, plus losing one team member on the second day (he went to Japan😢), which more or less affected our performance these two days, so what we accomplished was far below my expectations. But I think the more important reason we didn’t perform well was actually “we started too late” and “misunderstood the problem.”</p>
+<h5 id="Started-Too-Late"><a href="#Started-Too-Late" class="headerlink" title="Started Too Late"></a>Started Too Late</h5><p>After the workshop ended, we basically only did simple paper reviews and tested three architectures: LLaVA, BLIP, and Flamingo. We discovered very late that the resources the organizers provided weren’t enough for BLIP and Flamingo to use, so a lot of time was spent on things that didn’t contribute much to the final result. Additionally, because of my health during those days, I only did simple data analysis and didn’t at least run through their sample code to finetune LLaVA - this wasn’t done until competition day, so I think we really started working too late. With the two days of competition, what we could produce was probably just this much.</p>
+<h5 id="Misunderstood-the-Problem"><a href="#Misunderstood-the-Problem" class="headerlink" title="Misunderstood the Problem"></a>Misunderstood the Problem</h5><p>When we first saw the problem, we thought “do the first few questions really need generative models?” The required questions could actually be solved well with CV models we learned, so why would we need generative models (of course for questions like Q7 that ask about logic, we also thought they were necessary)? So we wrote to the organizers asking if we could use computer vision models to answer, but their response was “we don’t recommend using specialized models to answer one by one, because questions like #7 require more general capabilities.” Although we felt they didn’t answer our question, we understood it as they “didn’t want” us to use non-generative models. Then on competition day, we saw many teams combining CV model outputs with questions into new prompts for LLMs to generate results. Besides admiring other teams’ creativity, we also regretted misunderstanding the organizers’ intention and not thinking in the direction of combining image recognition with LLMs. This was the most regrettable part of this competition.</p>
+<h3 id="Reflections"><a href="#Reflections" class="headerlink" title="Reflections"></a>Reflections</h3><p>This competition felt regrettable because we didn’t give our full effort. Although we received praise from judges: “What a pity! You were on the border (4th place)! And you’re only juniors, so young, the other teams are all graduate students!” - and I think it was probably consolation, but hearing it still made me feel better, which is magical. However, this experience was perfect for me to explore the entire LLM architecture and have the opportunity to actually use deepspeed to finetune a model, which perfectly aligned with the tasks my lab professor would give me later. So I’ve now changed my mindset and think that having these gains from this competition is already quite sufficient. The rest is left for my future self to work on. I hope my future self looking back at participating in this competition will feel that I’ve grown a lot!</p>
 
                 
               </div>
@@ -315,7 +315,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E7%94%9F%E6%B4%BB/" class="category-chain-item">生活</a>
+  <a href="/categories/Life/" class="category-chain-item">Life</a>
   
   
 
@@ -330,9 +330,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E9%BB%91%E5%AE%A2%E6%9D%BE/">#黑客松</a>
+        <a href="/tags/Hackathon/">#Hackathon</a>
       
-        <a href="/tags/%E7%AB%B6%E8%B3%BD/">#競賽</a>
+        <a href="/tags/Competition/">#Competition</a>
       
     </div>
   
@@ -344,7 +344,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>[生活] 2024 TSMC IT CareerHack 校園黑客松</div>
+      <div>[Life] 2024 TSMC IT CareerHack Campus Hackathon</div>
       <div>https://torrid-fish.github.io/life-tsmc_2024_hackthon/</div>
     </div>
     <div class="license-meta">
@@ -357,7 +357,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>2024年1月27日</div>
+          <div>January 27, 2024</div>
         </div>
       
       
@@ -389,9 +389,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/tech-graphviz_light_dark_support/" title="[技術] 讓Graphviz也支援亮暗主題色變化吧">
+                      <a href="/tech-graphviz_light_dark_support/" title="[Tech] Adding Light/Dark Theme Support to Graphviz">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">[技術] 讓Graphviz也支援亮暗主題色變化吧</span>
+                        <span class="hidden-mobile">[Tech] Adding Light/Dark Theme Support to Graphviz</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
